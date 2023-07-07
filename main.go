@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"context"
+
+	"github.com/alecthomas/kong"
+
+	"github.com/batx-dev/cli/internal/cli"
+)
 
 func main() {
-	fmt.Println("Hello, Batainer!")
+	ctx := kong.Parse(&cli.CLI, kong.Configuration(kong.JSON))
+	err := ctx.Run(&cli.Context{Context: context.Background(), Config: cli.CLI.Config})
+	ctx.FatalIfErrorf(err)
 }
