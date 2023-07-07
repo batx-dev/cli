@@ -10,6 +10,11 @@ import (
 
 func main() {
 	ctx := kong.Parse(&cli.CLI, kong.Configuration(kong.JSON))
-	err := ctx.Run(&cli.Context{Context: context.Background(), Config: cli.CLI.Config})
+	err := ctx.Run(&cli.Context{
+		Context: context.Background(),
+		Config:  cli.CLI.Config,
+		BaseURL: cli.CLI.BaseURL,
+		Token:   cli.CLI.Token,
+	})
 	ctx.FatalIfErrorf(err)
 }
