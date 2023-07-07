@@ -16,9 +16,9 @@ type LoginCmd struct {
 	Endpoint string `help:"The endpoint to login." arg:"" default:"https://user.paratera.com"`
 }
 
-func (c *LoginCmd) Run(ctx *Context) error {
+func (c *LoginCmd) Run(g *Globals) error {
 	client := parauser.NewClient(c.Endpoint)
-	user, err := client.LoginUser(ctx.Context, &parauser.LoginUserRequest{
+	user, err := client.LoginUser(g.Context, &parauser.LoginUserRequest{
 		Email:    c.Username,
 		Password: c.Password,
 	})
@@ -26,7 +26,7 @@ func (c *LoginCmd) Run(ctx *Context) error {
 		return fmt.Errorf("login user: %v", err)
 	}
 
-	return writeConfig(string(ctx.Config), map[string]any{
+	return writeConfig(string(g.Config), map[string]any{
 		"token": user.Token,
 	})
 }

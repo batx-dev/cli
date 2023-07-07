@@ -12,9 +12,9 @@ type InstanceTypeCmd struct {
 	Cluster string `help:"The cluster id to filter." short:"c"`
 }
 
-func (c *InstanceTypeCmd) Run(ctx *Context) error {
-	client := batainer.NewClient(ctx.BaseURL).SetToken(ctx.Token)
-	res, err := client.ListInstanceTypes(ctx.Context, &batainer.ListInstanceTypesRequest{
+func (c *InstanceTypeCmd) Run(g *Globals) error {
+	client := batainer.NewClient(g.BaseURL).SetToken(g.Token)
+	res, err := client.ListInstanceTypes(g.Context, &batainer.ListInstanceTypesRequest{
 		ClusterID: c.Cluster,
 	})
 	if err != nil {

@@ -9,12 +9,20 @@ import (
 )
 
 func main() {
-	ctx := kong.Parse(&cli.CLI, kong.Configuration(kong.JSON))
-	err := ctx.Run(&cli.Context{
-		Context: context.Background(),
-		Config:  cli.CLI.Config,
-		BaseURL: cli.CLI.BaseURL,
-		Token:   cli.CLI.Token,
-	})
+	c := cli.CLI{
+		Globals: cli.Globals{
+			Context: context.Background(),
+		},
+	}
+	ctx := kong.Parse(&c,
+		kong.Name("bat"),
+		kong.Description("A command-line tool for managing batainer service."),
+		kong.UsageOnError(),
+		kong.ConfigureHelp(kong.HelpOptions{
+			Compact: true,
+		}),
+		kong.Configuration(kong.JSON),
+	)
+	err := ctx.Run(&c.Globals)
 	ctx.FatalIfErrorf(err)
 }
